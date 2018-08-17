@@ -1,11 +1,13 @@
-var path = require('path')
-var webpack = require('webpack')
+var path = require('path');
+var webpack = require('webpack');
+var PreRenderSpaPlugin = require('prerender-spa-plugin');
+var HtmlWebPackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './dist'),
-    publicPath: '/dist/',
+    publicPath: '/',
     filename: 'build.js'
   },
   module: {
@@ -103,6 +105,19 @@ if (process.env.NODE_ENV === 'production') {
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
-    })
-  ])
+    }),
+    new HtmlWebPackPlugin({
+      template: 'index.html',
+      filename: path.resolve(__dirname, 'dist/index.html')
+    }),
+    new PreRenderSpaPlugin(
+      // Absolute path to compiled SPA
+      path.resolve(__dirname, './dist'),
+      // List of routes to prerender
+      ['/', '/about'],
+      {
+        // options
+      }
+    )
+  ]);
 }
