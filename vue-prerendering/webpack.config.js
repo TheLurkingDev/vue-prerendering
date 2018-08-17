@@ -121,10 +121,18 @@ if (process.env.NODE_ENV === 'production') {
             '/': 'It is good to be home',
             '/about': 'Learn more'
           };
-          return context.html.replace(
+          var descriptions = {
+            '/': 'This is the home page that is loaded with keywords.',
+            '/about': 'This is the about page that is loaded with keywords'
+          };
+           return context.html.replace(
+            /The page description./i,
+            descriptions[context.route]
+          )
+          .replace(
             /<title>[^<]*<\/title>/i,
             '<title>' + titles[context.route] + '</title>'
-          );
+          );          
         }
       }
     )
