@@ -116,7 +116,16 @@ if (process.env.NODE_ENV === 'production') {
       // List of routes to prerender
       ['/', '/about'],
       {
-        // options
+        postProcessHtml: function(context) {
+          var titles = {
+            '/': 'It is good to be home',
+            '/about': 'Learn more'
+          };
+          return context.html.replace(
+            /<title>[^<]*<\/title>/i,
+            '<title>' + titles[context.route] + '</title>'
+          );
+        }
       }
     )
   ]);
